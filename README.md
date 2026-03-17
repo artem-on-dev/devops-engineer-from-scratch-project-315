@@ -1,3 +1,5 @@
+![CI](https://github.com/artem-on-dev/project-devops-deploy/actions/workflows/ci.yml/badge.svg)
+
 # Project DevOps Deploy
 
 Bulletin board service. Spring Boot backend with React Admin frontend.
