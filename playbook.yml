@@ -1,0 +1,26 @@
+- hosts: vps
+  become: true
+  vars:
+    docker_packages_state: present
+    docker_users:
+      - artem
+    ports:
+      - "12321" # custom SSH port
+      - "80"
+      - "443"
+
+  roles:
+    - geerlingguy.docker
+
+  tasks:
+    - name: Configure firewall
+      community.general.ufw:
+        rule: allow
+        port: '{{ item }}'
+      loop: "{{ ports }}"
+
+    - name: Enable firewall
+      community.general.ufw:
+        state: enabled
+        default: deny
+
