@@ -1,0 +1,25 @@
+- name: Prepare volumes
+  ansible.builtin.file:
+    path: "{{ item }}"
+    state: directory
+    owner: "{{ ansible_user }}"
+    mode: "0755"
+  loop:
+    - "{{ log_path }}"
+    - "{{ tmp_path }}"
+
+- name: Start app container
+  community.docker.docker_container:
+    name: "{{ docker_container }}"
+    image: "{{ docker_image }}"
+    state: started
+    pull: true
+    restart_policy: unless-stopped
+    ports:
+      - "{{ app_port }}:{{ app_port }}"
+    volumes:
+      - "{{ log_path }}:/app/log"
+      - "{{ tmp_path }}:/app/tmp"
+    env:
+      SPRING_PROFILES_ACTIVE: "prod"
+      JAVA_OPTS: "-Xmx512m"

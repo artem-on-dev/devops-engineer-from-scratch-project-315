@@ -1,16 +1,17 @@
-- hosts: vps
+- hosts: production
   become: true
   vars:
     docker_packages_state: present
     docker_users:
-      - artem
+      - devops
     ports:
-      - "12321" # custom SSH port
+      - "32223" # custom SSH port
       - "80"
       - "443"
 
   roles:
     - geerlingguy.docker
+    - deploy
 
   tasks:
     - name: Configure firewall
