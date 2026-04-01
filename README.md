@@ -4,6 +4,11 @@
 
 Bulletin board service. Spring Boot backend with React Admin frontend.
 
+ ## Production
+
+Available at: http://devops-3.sytes.net:8080
+
+
 ## Container
 
 ```bash
