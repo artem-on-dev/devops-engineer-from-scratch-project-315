@@ -12,6 +12,7 @@
 
   roles:
     - geerlingguy.docker
+    # TODO: Add S3 bucket provisioning role (e.g. s3_bucket) before deploy
     - deploy
 
   tasks:

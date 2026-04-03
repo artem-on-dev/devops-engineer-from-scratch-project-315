@@ -14,6 +14,7 @@
     image: "{{ docker_image }}"
     state: started
     pull: true
+    recreate: true
     restart_policy: unless-stopped
     ports:
       - "{{ app_port }}:{{ app_port }}"
@@ -22,7 +23,15 @@
       - "{{ tmp_path }}:/app/tmp"
     env:
       SPRING_PROFILES_ACTIVE: "prod"
-      SPRING_DATASOURCE_URL: "jdbc:postgresql://{{ db_host }}:{{ db_port }}/{{ db_name }}"
+      SPRING_DATASOURCE_URL: "jdbc:postgresql://{{ db_host }}:{{ db_port }}/{{ db_name }}?sslmode={{ db_sslmode }}"
       SPRING_DATASOURCE_USERNAME: "{{ vault_db_username }}"
       SPRING_DATASOURCE_PASSWORD: "{{ vault_db_password }}"
+
+      STORAGE_S3_BUCKET: '{{ s3_bucket }}'
+      STORAGE_S3_REGION: '{{ s3_region }}'
+      STORAGE_S3_ENDPOINT: '{{ s3_endpoint }}'
+      STORAGE_S3_ACCESSKEY: '{{ vault_s3_access_key }}'
+      STORAGE_S3_SECRETKEY: '{{ vault_s3_secret_key }}'
+      # STORAGE_S3_CDNURL: '{{ s3_cdnurl }}'
+
       JAVA_OPTS: "-Xmx512m"
