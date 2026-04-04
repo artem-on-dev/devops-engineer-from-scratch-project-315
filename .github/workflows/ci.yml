@@ -28,6 +28,9 @@ jobs:
         run: pip install ansible-lint
       - name: Run ansible linter
         run: ansible-lint
+        env:
+          ANSIBLE_VAULT_PASSWORD_FILE: /dev/null
+
 
 
   tests:
