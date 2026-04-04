@@ -24,6 +24,8 @@ jobs:
           java-version: ${{ env.JAVA_VERSION }}
       - name: Run linter
         run: make lint
+      - name: Run ansible linter
+        run: make ansible-lint
 
   tests:
     runs-on: ubuntu-latest

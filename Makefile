@@ -28,6 +28,9 @@ lint:
 lint-fix:
 	./gradlew spotlessApply
 
+ansible-lint:
+	ansible-lint
+
 image:
 	docker build -t $(REPOSITORY)/$(NAME):$(VERSION) .
 
