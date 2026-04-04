@@ -50,6 +50,7 @@
       - nginx
     certbot_webroot: /var/www/letsencrypt
     certbot_create_if_missing: true
+    certbot_admin_email: 'artem.stepanenko.ks.ua@gmail.com'
     certbot_certs:
       - domains:
           - devops-3.sytes.net
