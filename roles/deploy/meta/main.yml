@@ -1,7 +1,7 @@
 # SPDX-License-Identifier: MIT-0
 galaxy_info:
   author: Artem Stepanenko
-  description: Software Engineer
+  description: Deploy bulletins app as a Docker container
 
   # If the issue tracker for your role is not on github, uncomment the
   # next line and provide a value

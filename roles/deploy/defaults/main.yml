@@ -10,10 +10,6 @@ deploy_app_base_dir: "/opt/{{ deploy_app_name }}"
 deploy_tmp_path: "{{ deploy_app_base_dir }}/tmp"
 deploy_log_path: "{{ deploy_app_base_dir }}/log"
 
-deploy_db_host: "private-db-postgresql-fra1-25437-do-user-13876020-0.h.db.ondigitalocean.com"
-deploy_db_port: "25060"
-deploy_db_name: "defaultdb"
-deploy_db_sslmode: "require"
 
 deploy_s3_bucket: "devops-3"
 deploy_s3_region: "fra1"
