@@ -38,6 +38,6 @@ publish:
 	docker push $(REPOSITORY)/$(NAME):$(VERSION)
 
 deploy:
-	ansible-playbook playbook.yml -i inventory.ini --ask-vault-pass
+	ansible-playbook playbook.yml -i inventory.ini
 
 .PHONY: build image container publish deploy

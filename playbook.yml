@@ -7,6 +7,7 @@
       - devops
 
     # nginx config
+    nginx_remove_default_vhost: true
     nginx_vhosts:
       - listen: "80"
         server_name: "devops-3.sytes.net www.devops-3.sytes.net"
@@ -20,11 +21,10 @@
         ssl_protocols: "TLSv1.2 TLSv1.3"
         ssl_ciphers: "HIGH:!aNULL:!MD5"
         server_name: "devops-3.sytes.net"
-        server_name_redirect: "www.devops-3.sytes.net"
-        ssl_certificate: /etc/letsencrypt/live/devops-3.sytes.net/fullchain.pem
-        ssl_certificate_key: /etc/letsencrypt/live/devops-3.sytes.net/privkey.pem
 
         extra_parameters: |
+          ssl_certificate /etc/letsencrypt/live/devops-3.sytes.net/fullchain.pem;
+          ssl_certificate_key /etc/letsencrypt/live/devops-3.sytes.net/privkey.pem;
           location / {
             proxy_set_header Host $host;
             proxy_set_header X-Real-IP $remote_addr;
@@ -43,6 +43,7 @@
             proxy_pass http://localhost:8080;
             expires 1d;
           }
+
     # SSL Cert config
     certbot_auto_renew: true
     certbot_create_method: standalone
