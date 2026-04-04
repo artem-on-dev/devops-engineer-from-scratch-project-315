@@ -17,7 +17,7 @@
     recreate: true
     restart_policy: unless-stopped
     ports:
-      - "{{ deploy_app_port }}:{{ deploy_app_port }}"
+      - "127.0.0.1:{{ deploy_app_port }}:{{ deploy_app_port }}"
     volumes:
       - "{{ deploy_log_path }}:/app/log"
       - "{{ deploy_tmp_path }}:/app/tmp"
