@@ -40,4 +40,4 @@ publish:
 deploy:
 	ansible-playbook playbook.yml -i inventory.ini
 
-.PHONY: build image container publish deploy ansible-lint
+.PHONY: build image container publish deploy
