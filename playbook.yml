@@ -1,17 +1,44 @@
 - hosts: production
   become: true
   vars:
+    # docker config
     docker_packages_state: present
     docker_users:
       - devops
+
+    # nginx config
+    nginx_vhosts:
+      - listen: "80"
+        server_name: "devops-3.sytes.net"
+        server_name_redirect: "www.devops-3.sytes.net"
+        extra_parameters: |
+          location / {
+            proxy_set_header Host $host;
+            proxy_set_header X-Real-IP $remote_addr;
+            proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+            proxy_set_header X-Forwarded-Proto $scheme;
+
+            proxy_pass http://localhost:8080;
+          }
+          location ~* \.(css|js|png|jpg|jpeg|webp|svg|ico|woff2)$ {
+
+            proxy_set_header Host $host;
+            proxy_set_header X-Real-IP $remote_addr;
+            proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+            proxy_set_header X-Forwarded-Proto $scheme;
+
+            proxy_pass http://localhost:8080;
+            expires 1d;
+          }
+
     ports:
       - "32223" # custom SSH port
       - "80"
-      - "8080"
       - "443"
 
   roles:
     - geerlingguy.docker
+    - geerlingguy.nginx
     # TODO: Add S3 bucket provisioning role (e.g. s3_bucket) before deploy
     - deploy
 
@@ -19,11 +46,10 @@
     - name: Configure firewall
       community.general.ufw:
         rule: allow
-        port: '{{ item }}'
+        port: "{{ item }}"
       loop: "{{ ports }}"
 
     - name: Enable firewall
       community.general.ufw:
         state: enabled
         default: deny
-
