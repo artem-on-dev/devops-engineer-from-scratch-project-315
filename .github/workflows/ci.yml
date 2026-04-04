@@ -25,7 +25,7 @@ jobs:
       - name: Run linter
         run: make lint
       - name: Run ansible linter
-        run: make ansible-lint
+        run: ansible-lint
 
   tests:
     runs-on: ubuntu-latest

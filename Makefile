@@ -28,9 +28,6 @@ lint:
 lint-fix:
 	./gradlew spotlessApply
 
-ansible-lint:
-	ansible-lint
-
 image:
 	docker build -t $(REPOSITORY)/$(NAME):$(VERSION) .
 
@@ -43,4 +40,4 @@ publish:
 deploy:
 	ansible-playbook playbook.yml -i inventory.ini
 
-.PHONY: build image container publish deploy
+.PHONY: build image container publish deploy ansible-lint
