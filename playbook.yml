@@ -21,11 +21,18 @@
       - listen: "443 ssl"
         ssl_protocols: "TLSv1.2 TLSv1.3"
         ssl_ciphers: "HIGH:!aNULL:!MD5"
-        server_name: "devops-3.sytes.net"
+        server_name: "devops-3.sytes.net www.devops-3.sytes.net"
 
         extra_parameters: |
           ssl_certificate /etc/letsencrypt/live/devops-3.sytes.net/fullchain.pem;
           ssl_certificate_key /etc/letsencrypt/live/devops-3.sytes.net/privkey.pem;
+
+          add_header Strict-Transport-Security max-age=31536000 always;
+          add_header X-Frame-Options DENY always;
+          add_header X-Content-Type-Options nosniff always;
+          add_header Referrer-Policy strict-origin-when-cross-origin always;
+
+
           location / {
             proxy_set_header Host $host;
             proxy_set_header X-Real-IP $remote_addr;
@@ -34,8 +41,8 @@
 
             proxy_pass http://localhost:8080;
           }
-          location ~* \.(css|js|png|jpg|jpeg|webp|svg|ico|woff2)$ {
 
+          location ~* \.(css|js|png|jpg|jpeg|webp|svg|ico|woff2)$ {
             proxy_set_header Host $host;
             proxy_set_header X-Real-IP $remote_addr;
             proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
@@ -56,6 +63,7 @@
     certbot_certs:
       - domains:
           - devops-3.sytes.net
+          - www.devops-3.sytes.net
     certbot_auto_renew_options: "--webroot -w /var/www/letsencrypt --deploy-hook 'systemctl reload nginx'"
 
     ports:
@@ -63,10 +71,17 @@
       - "80"
       - "443"
 
+  pre_tasks:
+    - name: Create ssl_certificate directory
+      ansible.builtin.file:
+        path: /var/www/letsencrypt
+        state: directory
+        mode: "0755"
+
   roles:
     - geerlingguy.docker
-    - geerlingguy.certbot
     - geerlingguy.nginx
+    - geerlingguy.certbot
     # TODO: Add S3 bucket provisioning role (e.g. s3_bucket) before deploy
     - deploy
 

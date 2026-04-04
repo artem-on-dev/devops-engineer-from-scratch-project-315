@@ -14,7 +14,7 @@
     image: "{{ deploy_docker_image }}"
     state: started
     pull: true
-    recreate: true
+    recreate: false
     restart_policy: unless-stopped
     ports:
       - "127.0.0.1:{{ deploy_app_port }}:{{ deploy_app_port }}"
@@ -32,6 +32,5 @@
       STORAGE_S3_ENDPOINT: '{{ deploy_s3_endpoint }}'
       STORAGE_S3_ACCESSKEY: '{{ vault_s3_access_key }}'
       STORAGE_S3_SECRETKEY: '{{ vault_s3_secret_key }}'
-      # STORAGE_S3_CDNURL: '{{ s3_cdnurl }}'
 
       JAVA_OPTS: "-Xmx512m"
