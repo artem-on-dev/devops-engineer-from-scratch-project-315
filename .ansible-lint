@@ -1,2 +1,3 @@
 exclude_paths:
   - .ansible/
+mock_vault: true
