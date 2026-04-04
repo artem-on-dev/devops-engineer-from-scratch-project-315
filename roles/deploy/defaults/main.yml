@@ -1,21 +1,16 @@
-app_name: bulletins
+deploy_app_name: bulletins
 
-docker_registry_repo: artemstepanenko
-docker_container: bulletins
-docker_image: "{{ docker_registry_repo }}/{{ app_name }}:{{ image_tag }}"
-image_tag: "latest"
+deploy_docker_registry_repo: artemstepanenko
+deploy_docker_container: bulletins
+deploy_docker_image: "{{ deploy_docker_registry_repo }}/{{ deploy_app_name }}:{{ deploy_image_tag }}"
+deploy_image_tag: "latest"
 
-app_port: 8080
-app_base_dir: "/opt/{{ app_name }}"
-tmp_path: "{{ app_base_dir}}/tmp"
-log_path: "{{ app_base_dir}}/log"
+deploy_app_port: 8080
+deploy_app_base_dir: "/opt/{{ deploy_app_name }}"
+deploy_tmp_path: "{{ deploy_app_base_dir }}/tmp"
+deploy_log_path: "{{ deploy_app_base_dir }}/log"
 
-db_host: "private-db-postgresql-fra1-25437-do-user-13876020-0.h.db.ondigitalocean.com"
-db_port: "25060"
-db_name: "defaultdb"
-db_sslmode: "require"
 
-s3_bucket: "devops-3"
-s3_region: "fra1"
-s3_endpoint: "https://fra1.digitaloceanspaces.com"
-# s3_cdnurl: "https://devops-3.fra1.cdn.digitaloceanspaces.com"
+deploy_s3_bucket: "devops-3"
+deploy_s3_region: "fra1"
+deploy_s3_endpoint: "https://fra1.digitaloceanspaces.com"

@@ -1,15 +1,18 @@
-- hosts: production
+- name: Production
+  hosts: production
   become: true
   vars:
+    domain_name: "devops-3.sytes.net"
     # docker config
     docker_packages_state: present
     docker_users:
       - devops
 
     # nginx config
+    nginx_remove_default_vhost: true
     nginx_vhosts:
       - listen: "80"
-        server_name: "devops-3.sytes.net www.devops-3.sytes.net"
+        server_name: "{{ domain_name }} www.{{ domain_name }}"
         extra_parameters: |
           location /.well-known/acme-challenge/ {
             root /var/www/letsencrypt
@@ -19,30 +22,33 @@
       - listen: "443 ssl"
         ssl_protocols: "TLSv1.2 TLSv1.3"
         ssl_ciphers: "HIGH:!aNULL:!MD5"
-        server_name: "devops-3.sytes.net"
-        server_name_redirect: "www.devops-3.sytes.net"
-        ssl_certificate: /etc/letsencrypt/live/devops-3.sytes.net/fullchain.pem
-        ssl_certificate_key: /etc/letsencrypt/live/devops-3.sytes.net/privkey.pem
+        server_name: "{{ domain_name }} www.{{ domain_name }}"
 
         extra_parameters: |
+          ssl_certificate /etc/letsencrypt/live/{{ domain_name }}/fullchain.pem;
+          ssl_certificate_key /etc/letsencrypt/live/{{ domain_name }}/privkey.pem;
+
+          add_header Strict-Transport-Security max-age=31536000 always;
+          add_header X-Frame-Options DENY always;
+          add_header X-Content-Type-Options nosniff always;
+          add_header Referrer-Policy strict-origin-when-cross-origin always;
+          add_header Content-Security-Policy "default-src 'self'" always;
+
+
+          proxy_set_header Host $host;
+          proxy_set_header X-Real-IP $remote_addr;
+          proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+          proxy_set_header X-Forwarded-Proto $scheme;
+
           location / {
-            proxy_set_header Host $host;
-            proxy_set_header X-Real-IP $remote_addr;
-            proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
-            proxy_set_header X-Forwarded-Proto $scheme;
-
-            proxy_pass http://localhost:8080;
+            proxy_pass http://localhost:{{ deploy_app_port }};
           }
+
           location ~* \.(css|js|png|jpg|jpeg|webp|svg|ico|woff2)$ {
-
-            proxy_set_header Host $host;
-            proxy_set_header X-Real-IP $remote_addr;
-            proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
-            proxy_set_header X-Forwarded-Proto $scheme;
-
-            proxy_pass http://localhost:8080;
+            proxy_pass http://localhost:{{ deploy_app_port }};
             expires 1d;
           }
+
     # SSL Cert config
     certbot_auto_renew: true
     certbot_create_method: standalone
@@ -50,9 +56,11 @@
       - nginx
     certbot_webroot: /var/www/letsencrypt
     certbot_create_if_missing: true
+    certbot_admin_email: "artem.stepanenko.ks.ua@gmail.com"
     certbot_certs:
       - domains:
-          - devops-3.sytes.net
+          - "{{ domain_name }}"
+          - "www.{{ domain_name }}"
     certbot_auto_renew_options: "--webroot -w /var/www/letsencrypt --deploy-hook 'systemctl reload nginx'"
 
     ports:
@@ -60,11 +68,17 @@
       - "80"
       - "443"
 
+  pre_tasks:
+    - name: Create ssl_certificate directory
+      ansible.builtin.file:
+        path: /var/www/letsencrypt
+        state: directory
+        mode: "0755"
+
   roles:
     - geerlingguy.docker
-    - geerlingguy.certbot
     - geerlingguy.nginx
-    # TODO: Add S3 bucket provisioning role (e.g. s3_bucket) before deploy
+    - geerlingguy.certbot
     - deploy
 
   tasks:

@@ -37,7 +37,10 @@ container:
 publish:
 	docker push $(REPOSITORY)/$(NAME):$(VERSION)
 
-deploy:
-	ansible-playbook playbook.yml -i inventory.ini --ask-vault-pass
+setup:
+	ansible-galaxy role install -r requirements.yml && ansible-galaxy collection install -r requirements.yml
 
-.PHONY: build image container publish deploy
+deploy:
+	ansible-playbook playbook.yml -i inventory.ini
+
+.PHONY: build image container publish deploy setup

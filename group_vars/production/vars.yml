@@ -1,0 +1,4 @@
+db_host: "private-db-postgresql-fra1-25437-do-user-13876020-0.h.db.ondigitalocean.com"
+db_port: "25060"
+db_name: "defaultdb"
+db_sslmode: "require"
