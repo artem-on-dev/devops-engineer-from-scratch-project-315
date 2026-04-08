@@ -134,10 +134,9 @@ const extractImageFile = (data: MutablePayload) => {
 
 const preparePayload = async (data: JsonRecord) => {
   const payload = { ...data } as MutablePayload;
+  const rawFile = extractImageFile(payload);
   delete payload.image;
   delete payload.imageUrl;
-
-  const rawFile = extractImageFile(payload);
   if (rawFile) {
     const result = await uploadImage(rawFile);
     if (result?.key) {
