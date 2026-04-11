@@ -9,5 +9,4 @@ certbot_admin_email: "artem.stepanenko.ks.ua@gmail.com"
 certbot_certs:
   - domains:
       - "{{ domain_name }}"
-      - "www.{{ domain_name }}"
 certbot_auto_renew_options: "--webroot -w /var/www/letsencrypt --deploy-hook 'systemctl reload nginx'"
