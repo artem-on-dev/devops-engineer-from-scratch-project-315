@@ -1,4 +1,11 @@
 nginx_remove_default_vhost: true
+csp_policy: >-
+  default-src 'self';
+  style-src 'self' 'unsafe-inline' https://fonts.googleapis.com;
+  font-src 'self' https://fonts.gstatic.com;
+  img-src 'self' https://*.digitaloceanspaces.com data: blob:;
+  connect-src 'self' https://*.digitaloceanspaces.com
+
 nginx_vhosts:
   - listen: "80"
     server_name: "{{ domain_name }}"
@@ -21,8 +28,7 @@ nginx_vhosts:
       add_header X-Frame-Options DENY always;
       add_header X-Content-Type-Options nosniff always;
       add_header Referrer-Policy strict-origin-when-cross-origin always;
-      add_header Content-Security-Policy "default-src 'self'" always;
-
+      add_header Content-Security-Policy "{{ csp_policy }}" always;
 
       proxy_set_header Host $host;
       proxy_set_header X-Real-IP $remote_addr;
@@ -37,4 +43,3 @@ nginx_vhosts:
         proxy_pass http://localhost:{{ deploy_app_port }};
         expires 1d;
       }
-
