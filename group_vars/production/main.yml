@@ -1,0 +1,15 @@
+db_host: "private-db-postgresql-fra1-25437-do-user-13876020-0.h.db.ondigitalocean.com"
+db_port: "25060"
+db_name: "defaultdb"
+db_sslmode: "require"
+
+domain_name: "devops-3.sytes.net"
+# docker config
+docker_packages_state: present
+docker_users:
+  - devops
+
+ports:
+  - "32223" # custom SSH port
+  - "80"
+  - "443"
