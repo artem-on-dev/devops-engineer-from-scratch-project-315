@@ -1,4 +1,3 @@
-[![CI](https://github.com/artem-on-dev/devops-engineer-from-scratch-project-315/actions/workflows/ci.yml/badge.svg)](https://github.com/artem-on-dev/devops-engineer-from-scratch-project-315/actions/workflows/ci.yml)
 [![hexlet-check](https://github.com/artem-on-dev/devops-engineer-from-scratch-project-315/actions/workflows/hexlet-check.yml/badge.svg)](https://github.com/artem-on-dev/devops-engineer-from-scratch-project-315/actions/workflows/hexlet-check.yml)
 
 # Project DevOps Deploy
